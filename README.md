@@ -41,5 +41,5 @@ The sales team now:
 ---
 
 Want to build automations like this for your business?  
-👉 Let’s talk or [connect with me on LinkedIn](https://www.linkedin.com/in/bheta-dwiki-maranata)
+👉 Let’s talk or https://www.linkedin.com/in/bheta-dwiki-maranata-15654b227/
 
