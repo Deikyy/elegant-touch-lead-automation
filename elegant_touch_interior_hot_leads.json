@@ -1,0 +1,144 @@
+{
+  "name": "elegant touch interior_hot leads",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "73c3d8db-55c5-4f0c-a416-f9975cb875a0",
+              "leftValue": "={{ $json.leadScore }}",
+              "rightValue": "HOT",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        0
+      ],
+      "id": "64771c58-4786-494e-bfcd-9a5c04edc3d5",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "maranathabheta@gmail.com",
+        "subject": "HOT LEADS HURRY UP!",
+        "emailType": "text",
+        "message": "=Name: {{ $json['Full name'] }}\nEmail: {{ $json.Email }}\nPhone Number: {{ $json['Phone number'] }}\nProject type: {{ $json['Project type'] }}\nAdditional note:{{ $json['Additional notes'] }}\nBudget: {{ $json.Budget }}\nLeadScore: {{ $json.leadScore }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        620,
+        -20
+      ],
+      "id": "d4fa256c-7211-4d46-9bd1-3736ff123c2c",
+      "name": "Gmail",
+      "webhookId": "fe2acb5a-e545-4930-92c9-b8924237df73",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RCmZnMZG3DOyk46I",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "b9a9f919-7a21-434b-a14c-05a8af3a7f82",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "wIOwVNUoP362dPBQ",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2e53498f-412f-4e4c-ad36-150a24db04e5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a287613f1596da776459594685fbf4e2b4a12124f80ab8c8772f5e37bff103ae"
+  },
+  "id": "8wxPWRNUNJzgQL7r",
+  "tags": [
+    {
+      "createdAt": "2025-04-26T16:11:12.416Z",
+      "updatedAt": "2025-04-26T16:11:12.416Z",
+      "id": "3P4VI0my4kAGkwtz",
+      "name": "practice"
+    }
+  ]
+}
