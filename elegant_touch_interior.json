@@ -1,0 +1,197 @@
+{
+  "name": "elegant touch interior",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Contact us",
+        "formDescription": "Fill the form to solve your problems:",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Phone number",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Project type",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Budget",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Project timeline (month)",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Additional notes",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e4eeca65-d67d-4936-9d1a-82ef3c30281e",
+      "name": "On form submission",
+      "webhookId": "547333ab-657b-4699-8786-fc11197ac693"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        400,
+        0
+      ],
+      "id": "0cb8060c-a432-411e-b071-a2447f3bcd42",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Hkh8geVk1KUWOnwL",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let score = \"COLD\";\nconst item = $input.item.json;\n\nconst budget = item[\"Budget\"];\nconst timeline = item[\"Project timeline (month)\"];\n\nif (budget > 20000 && timeline === \"1\") {\n  score = \"HOT\";\n} else if (budget > 10000 && (timeline === \"2\" || timeline === \"3\")) {\n  score = \"WARM\";\n}\n\nreturn [{\n  json: {\n    ...item,\n    leadScore: score\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        0
+      ],
+      "id": "19164a35-007f-4e56-8a01-5e01d76a66ff",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "subject": "LEADS COMING!",
+        "emailType": "text",
+        "message": "=Full name: {{ $json['Full name'] }}\nEmail: {{ $json.Email }}\nPhone Number: {{ $json['Phone number'] }}\nProject type: {{ $json['Project type'] }}\nBudget: {{ $json.Budget }}\nProject timeline: {{ $json['Project timeline (month)'] }}\nAdditional notes: {{ $json['Additional notes'] }}\nSubmitted: {{ $json.submittedAt }}\nLEADSCORE: {{ $json.leadScore }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        600,
+        0
+      ],
+      "id": "cbd3943e-8580-4fe2-ab0c-4cb1cf22e306",
+      "name": "Gmail",
+      "webhookId": "c30ecb57-0411-41b9-b875-39e248efdc96",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "mCf6HOHzjF4RjcLm",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1500,
+        820
+      ],
+      "id": "80a907bc-0792-43cc-b1d2-1bbc33575949",
+      "name": "Wait",
+      "webhookId": "7f6be536-8a39-4e4e-99c5-0db8ae4db07a"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9c9b4023-addb-4f5f-b84e-70bbc16fba10",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a287613f1596da776459594685fbf4e2b4a12124f80ab8c8772f5e37bff103ae"
+  },
+  "id": "VIU7SSn1BRRgHF2P",
+  "tags": [
+    {
+      "createdAt": "2025-04-26T16:11:12.416Z",
+      "updatedAt": "2025-04-26T16:11:12.416Z",
+      "id": "3P4VI0my4kAGkwtz",
+      "name": "practice"
+    }
+  ]
+}
